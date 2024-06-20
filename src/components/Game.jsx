@@ -45,6 +45,7 @@ const Game = () => {
       <h2>Select Difficulty</h2>
       <button onClick={() => handleDifficultySelection('easy')}>Easy</button>
       <button onClick={() => handleDifficultySelection('medium')}>Medium</button>
+      <button onClick={() => handleDifficultySelection('hard')}>Hard</button>
     </div>
   );
 

@@ -104,6 +104,8 @@ function calculateBotMove(squares, difficulty) {
       return randomMove(squares);
     case 'medium':
       return firstAvailableMove(squares);
+    case 'hard':
+      return minimaxMove(squares);
     default:
       return -1;
   }
@@ -129,6 +131,50 @@ function minimaxMove(squares) {
   return bestMove.index;
 }
 
+function minimax(newSquares, isMaximizing) {
+  const winner = calculateWinner(newSquares);
+  if (winner === 'X') {
+    return { score: -10 };
+  }
+  if (winner === 'O') {
+    return { score: 10 };
+  }
+  if (!newSquares.includes(null)) {
+    return { score: 0 };
+  }
 
+  const moves = [];
+  for (let i = 0; i < newSquares.length; i++) {
+    if (!newSquares[i]) {
+      const move = {};
+      move.index = i;
+      newSquares[i] = isMaximizing ? 'O' : 'X';
+      const result = minimax(newSquares, !isMaximizing);
+      move.score = result.score;
+      newSquares[i] = null;
+      moves.push(move);
+    }
+  }
+
+  let bestMove;
+  if (isMaximizing) {
+    let bestScore = -Infinity;
+    for (let i = 0; i < moves.length; i++) {
+      if (moves[i].score > bestScore) {
+        bestScore = moves[i].score;
+        bestMove = moves[i];
+      }
+    }
+  } else {
+    let bestScore = Infinity;
+    for (let i = 0; i < moves.length; i++) {
+      if (moves[i].score < bestScore) {
+        bestScore = moves[i].score;
+        bestMove = moves[i];
+      }
+    }
+  }
+  return bestMove;
+}
 
 export default Board;
